@@ -2,14 +2,8 @@
 
 * Search engine helper using Sentence-BERT and elasticsearch to return results based on semantic similarity
 
-* Setup
+* Build package
 
 ``
-pip install -r requiements
-``
-
-* Run tests
-
-``
-pytest
+$ python setup.py sdist bdist_wheel 
 ``
