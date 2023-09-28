@@ -16,10 +16,8 @@ class Search(ElasticSearch):
         self.threshold = similarity_score_threshold
 
     def get_result(self) -> Union[str, dict]:
-        search_field = None
-        search_query = None
         search_results: List[dict] = self.search_index(
-            search_field, search_query)
+            self.search_field, self.search_query)
         best_match_index: Optional[int] = None
         best_match_similarity: float = -1
 
