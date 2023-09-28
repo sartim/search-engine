@@ -2,21 +2,19 @@ import certifi
 import re
 import logging
 import typing
-
 from elasticsearch import Elasticsearch
-
 
 es_log = logging.getLogger("elasticsearch")
 es_log.setLevel(logging.CRITICAL)
 
 
 class ElasticSearch:
-    def __init__(self, es_url, index):
+    def __init__(self, es_url: str, index: str):
         self.es_url = es_url
         self.index = index
 
     def elasticsearch_conn(self) -> typing.Optional[Elasticsearch]:
-        elasticsearch = None
+        elasticsearch: typing.Optional[Elasticsearch] = None
         if self.es_url:
             auth = re.search(
                 'https\:\/\/(.*)\@', self.es_url).group(1).split(':')
@@ -35,7 +33,9 @@ class ElasticSearch:
                 elasticsearch = None
         return elasticsearch
 
-    def search_index(self, search_field, search_query) -> typing.List:
+    def search_index(
+        self, search_field: str, search_query: str
+    ) -> typing.List[typing.Dict[str, typing.Any]]:
         query = {
             "match": {
                 search_field: {
@@ -62,5 +62,3 @@ class ElasticSearch:
             return []
         else:
             return search['hits']['hits']
-
-

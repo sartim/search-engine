@@ -1,24 +1,30 @@
 from sentence_transformers import SentenceTransformer, util
+from typing import List, Optional, Union
 
+from search_engine.elasticsearch import ElasticSearch
 
 model_name = 'bert-base-nli-mean-tokens'
 model = SentenceTransformer(model_name)
 
 
-class Search:
-    def __init__(self, **kwargs):
-        self.search_query = kwargs.get('search_query')
-        self.search_field = kwargs.get('search_field')
-        self.threshold = kwargs.get('similarity_score_threshold', 0.8)
+class Search(ElasticSearch):
+    def __init__(self, search_query: str, search_field: str, es_url, index,
+                 similarity_score_threshold: float = 0.8):
+        super().__init__(es_url, index)
+        self.search_query = search_query
+        self.search_field = search_field
+        self.threshold = similarity_score_threshold
 
-    def get_result(self):
-        search_results = []
-        best_match_index = None
-        best_match_similarity = -1
+    def get_result(self) -> Union[str, dict]:
+        search_field = None
+        search_query = None
+        search_results: List[dict] = self.search_index(
+            search_field, search_query)
+        best_match_index: Optional[int] = None
+        best_match_similarity: float = -1
 
         encoded_search_query = model.encode(
-            [self.search_query], convert_to_tensor=True
-        )
+            [self.search_query], convert_to_tensor=True)
 
         for i, item in enumerate(search_results):
             _source = item['_source']
