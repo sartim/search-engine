@@ -1,4 +1,6 @@
-from typing import Any, List, Optional, Union
+from __future__ import annotations
+
+from typing import Any
 
 from search_engine.elasticsearch import ElasticSearch
 
@@ -14,7 +16,7 @@ class Search(ElasticSearch):
         self.search_field = search_field
         self.threshold = similarity_score_threshold
         self.model_name = model_name
-        self._model: Optional[Any] = None
+        self._model: Any | None = None
 
     def _get_model(self) -> Any:
         """Load the embedding model only when a search is actually performed."""
@@ -23,10 +25,10 @@ class Search(ElasticSearch):
             self._model = SentenceTransformer(self.model_name)
         return self._model
 
-    def get_result(self) -> Union[str, dict]:
-        search_results: List[dict] = self.search_index(
+    def get_result(self) -> str | dict:
+        search_results: list[dict] = self.search_index(
             self.search_field, self.search_query)
-        best_match_index: Optional[int] = None
+        best_match_index: int | None = None
         best_match_similarity: float = -1
 
         model = self._get_model()

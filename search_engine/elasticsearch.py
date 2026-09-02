@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import logging
-import typing
+from typing import Any, cast
 from urllib.parse import urlsplit, urlunsplit
 
 import certifi
@@ -13,9 +15,9 @@ class ElasticSearch:
     def __init__(self, es_url: str, index: str):
         self.es_url = es_url
         self.index = index
-        self._client: typing.Optional[Elasticsearch] = None
+        self._client: Elasticsearch | None = None
 
-    def elasticsearch_conn(self) -> typing.Optional[Elasticsearch]:
+    def elasticsearch_conn(self) -> Elasticsearch | None:
         """Return a cached Elasticsearch client, or ``None`` if unavailable."""
         if self._client is not None:
             return self._client
@@ -28,7 +30,7 @@ class ElasticSearch:
             return None
 
         clean_url = urlunsplit((parsed.scheme, parsed.netloc.split("@")[-1], parsed.path, "", ""))
-        kwargs: typing.Dict[str, typing.Any] = {
+        kwargs: dict[str, Any] = {
             "ca_certs": certifi.where(),
             "request_timeout": 30,
         }
@@ -40,7 +42,7 @@ class ElasticSearch:
             if not client.ping():
                 es_log.error("Elasticsearch ping failed for %s", clean_url)
                 return None
-        except Exception:
+        except Exception:  # noqa: BLE001 - translate client errors to an unavailable client
             es_log.exception("Could not connect to Elasticsearch at %s", clean_url)
             return None
 
@@ -49,7 +51,7 @@ class ElasticSearch:
 
     def search_index(
         self, search_field: str, search_query: str
-    ) -> typing.List[typing.Dict[str, typing.Any]]:
+    ) -> list[dict[str, Any]]:
         query = {
             "match": {
                 search_field: {
@@ -66,7 +68,7 @@ class ElasticSearch:
         try:
             es_log.info("Elasticsearch query: %s", query)
             search = client.search(index=self.index, query=query, size=10)
-        except Exception:
+        except Exception:  # noqa: BLE001 - keep search failures from breaking callers
             es_log.exception("Elasticsearch search failed")
             return []
-        return typing.cast(typing.List[typing.Dict[str, typing.Any]], search["hits"]["hits"])
+        return cast(list[dict[str, Any]], search["hits"]["hits"])
