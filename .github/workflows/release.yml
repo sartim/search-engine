@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
 
 jobs:
@@ -23,3 +24,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: uv run semantic-release version
+      - name: Dispatch package publishing for a new tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag=$(git describe --tags --exact-match HEAD 2>/dev/null || true)
+          if [ -n "$tag" ]; then
+            gh workflow run publish.yml --repo "${{ github.repository }}" --ref "$tag"
+          else
+            echo "No new release tag was created; skipping package publishing."
+          fi

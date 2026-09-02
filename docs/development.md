@@ -51,4 +51,4 @@ uv build
 
 ## Releases
 
-Release commits and tags are managed by `python-semantic-release`. Use Conventional Commit prefixes such as `feat:`, `fix:`, and `docs:` so the next version can be calculated from the commit history. The release workflow creates a GitHub release; tagged releases are built and published to PyPI by the publishing workflow.
+Release commits and tags are managed by `python-semantic-release`. Use Conventional Commit prefixes such as `feat:`, `fix:`, and `docs:` so the next version can be calculated from the commit history. The release workflow creates a GitHub release and explicitly dispatches the package-publishing workflow for a newly created tag. Configure the repository as a [PyPI trusted publisher](https://pypi.org/manage/account/publishing/) with this repository, the `publish.yml` workflow, and the `pypi` environment before publishing packages.
