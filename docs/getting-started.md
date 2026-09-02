@@ -5,10 +5,7 @@
 The project supports Python 3.9 and newer:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install .
+uv sync
 ```
 
 The first real search downloads the configured Sentence Transformer model if it is not already cached. `Search` deliberately loads that model lazily, so importing the package does not incur model startup cost.

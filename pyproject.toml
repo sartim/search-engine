@@ -1,3 +1,69 @@
 [build-system]
-requires = ["setuptools>=61"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "search-engine"
+version = "1.1.0"
+description = "Semantic search helpers backed by Elasticsearch"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "sartim" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+  "certifi>=2023.7.22",
+  "elasticsearch>=8.10,<9",
+  "sentence-transformers>=2.2,<4",
+]
+
+[project.urls]
+Documentation = "https://sartim.github.io/search-engine/"
+Repository = "https://github.com/sartim/search-engine"
+Issues = "https://github.com/sartim/search-engine/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["search_engine"]
+
+[tool.uv]
+required-environments = [
+  "sys_platform == 'darwin' and platform_machine == 'x86_64'",
+  "sys_platform == 'linux' and platform_machine == 'x86_64'",
+]
+
+[dependency-groups]
+dev = [
+  "build>=1.2,<2",
+  "pytest>=8,<9",
+  "ruff>=0.9,<1",
+  "python-semantic-release>=10,<11",
+]
+docs = [
+  "mkdocs>=1.6,<2",
+  "mkdocs-material>=9.5,<10",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.semantic_release]
+branch = "main"
+commit_message = "chore(release): v{version}"
+build_command = "uv build"
+version_toml = ["pyproject.toml:project.version"]
+upload_to_repository = false
+upload_to_vcs_release = true

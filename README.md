@@ -2,10 +2,11 @@
 
 Semantic search helpers using Sentence Transformers and Elasticsearch. The package first retrieves likely matches with Elasticsearch's fuzzy text query, then ranks those matches using cosine similarity between sentence embeddings.
 
-## Install
+## Install with uv
 
 ```bash
-python -m pip install .
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv sync
 ```
 
 ## Quick start

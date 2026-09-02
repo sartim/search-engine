@@ -3,25 +3,37 @@
 ## Install development tools
 
 ```bash
-python -m pip install -e .
-python -m pip install -r requirements-docs.txt
+uv sync --all-groups
 ```
+
+## Branch naming
+
+Use a standard type prefix followed by a short lowercase kebab-case description:
+
+```text
+feature/add-vector-search
+fix/connection-timeout
+docs/update-installation
+chore/refresh-dependencies
+```
+
+Do not use a `codex/` prefix. Keep branches focused and open pull requests against `main`.
 
 Build the documentation locally with:
 
 ```bash
-mkdocs serve
+uv run mkdocs serve
 ```
 
 Then open the local URL printed by MkDocs. To check the same rules used in CI:
 
 ```bash
-mkdocs build --strict
+uv run mkdocs build --strict
 ```
 
 ## Documentation layout
 
-Markdown source files live in `docs/`. `mkdocs.yml` controls navigation, theme, and site metadata. The generated `site/` directory is disposable build output and should not be committed.
+Markdown source files live in `docs/`. `mkdocs.yml` controls navigation, theme, and site metadata. The generated `site/` directory is disposable build output and should not be committed. `uv.lock` records the resolved dependency versions used by local development and CI.
 
 ## GitHub Pages deployment
 
@@ -31,9 +43,12 @@ In the repository settings, set **Pages → Build and deployment → Source** to
 
 ## Package build
 
-The project uses the modern PEP 517 build interface through `pyproject.toml`, while keeping the metadata in `setup.py` for straightforward setuptools compatibility:
+The project uses the PEP 517 build interface through `pyproject.toml` and Hatchling:
 
 ```bash
-python -m pip install build
-python -m build
+uv build
 ```
+
+## Releases
+
+Release commits and tags are managed by `python-semantic-release`. Use Conventional Commit prefixes such as `feat:`, `fix:`, and `docs:` so the next version can be calculated from the commit history. The release workflow creates a GitHub release; tagged releases are built and published to PyPI by the publishing workflow.
