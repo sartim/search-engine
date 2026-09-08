@@ -5,10 +5,10 @@
 The project supports Python 3.9 and newer:
 
 ```bash
-uv sync
+uv sync --extra semantic
 ```
 
-The first real search downloads the configured Sentence Transformer model if it is not already cached. `Search` deliberately loads that model lazily, so importing the package does not incur model startup cost.
+The `semantic` extra installs Sentence Transformers. The first real search downloads the configured model if it is not already cached. `Search` loads that model lazily, so importing the package does not incur model startup cost.
 
 ## Connect to Elasticsearch
 
@@ -46,4 +46,4 @@ search = Search(
 
 ## Understand the return value
 
-`get_result()` returns the selected Elasticsearch `_source` dictionary. If Elasticsearch is unreachable, the index has no candidates, or the best similarity score is at or below the threshold, it returns `"No results found."`.
+`get_result()` returns the selected Elasticsearch `_source` dictionary or `None`. If Elasticsearch is unreachable, the index has no candidates, or the best similarity score is at or below the threshold, it returns `None`.

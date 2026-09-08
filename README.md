@@ -6,7 +6,7 @@ Semantic search helpers using Sentence Transformers and Elasticsearch. The packa
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
-uv sync
+uv sync --extra semantic
 ```
 
 ## Quick start
@@ -22,5 +22,7 @@ search = Search(
 )
 result = search.get_result()
 ```
+
+`get_result()` returns the matching document or `None` when no candidate exceeds the similarity threshold.
 
 See the [documentation](https://sartim.github.io/search-engine/) for configuration, development, and deployment details.

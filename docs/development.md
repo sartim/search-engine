@@ -3,7 +3,7 @@
 ## Install development tools
 
 ```bash
-uv sync --all-groups
+uv sync --all-groups --extra semantic
 ```
 
 ## Branch naming

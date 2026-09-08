@@ -3164,6 +3164,10 @@ source = { editable = "." }
 dependencies = [
     { name = "certifi" },
     { name = "elasticsearch" },
+]
+
+[package.optional-dependencies]
+semantic = [
     { name = "sentence-transformers" },
 ]
 
@@ -3184,8 +3188,9 @@ docs = [
 requires-dist = [
     { name = "certifi", specifier = ">=2023.7.22" },
     { name = "elasticsearch", specifier = ">=8.10,<9" },
-    { name = "sentence-transformers", specifier = ">=2.2,<4" },
+    { name = "sentence-transformers", marker = "extra == 'semantic'", specifier = ">=2.2,<4" },
 ]
+provides-extras = ["semantic"]
 
 [package.metadata.requires-dev]
 dev = [

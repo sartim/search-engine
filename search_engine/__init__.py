@@ -1,6 +1,11 @@
 """Semantic search helpers backed by Elasticsearch."""
 
-__version__ = "1.1.0"
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("search-engine")
+except PackageNotFoundError:
+    __version__ = "0.0.0"
 
 from search_engine.search import Search
 

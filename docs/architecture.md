@@ -16,7 +16,7 @@ Sentence Transformer embeddings
 Cosine similarity + threshold
         |
         v
-Best document _source / "No results found."
+Best document _source / None
 ```
 
 ## `ElasticSearch`

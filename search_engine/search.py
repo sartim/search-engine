@@ -25,9 +25,11 @@ class Search(ElasticSearch):
             self._model = SentenceTransformer(self.model_name)
         return self._model
 
-    def get_result(self) -> str | dict:
-        search_results: list[dict] = self.search_index(
-            self.search_field, self.search_query)
+    def get_result(self) -> dict | None:
+        search_results: list[dict] = self.search_index(self.search_field, self.search_query)
+        if not search_results:
+            return None
+
         best_match_index: int | None = None
         best_match_similarity: float = -1
 
@@ -49,9 +51,7 @@ class Search(ElasticSearch):
                 best_match_similarity = similarity_score
                 best_match_index = i
 
-        if best_match_similarity > 0:
+        if best_match_index is not None and best_match_similarity > self.threshold:
             best_match = search_results[best_match_index]
-            result = best_match['_source']
-            if best_match_similarity > self.threshold:
-                return result
-        return "No results found."
+            return best_match["_source"]
+        return None
