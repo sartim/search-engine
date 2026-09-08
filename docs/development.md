@@ -6,6 +6,8 @@
 uv sync --all-groups --extra semantic
 ```
 
+The semantic extra is resolved for Linux x86_64 and Apple Silicon. Keep Intel macOS environments on the base package or run semantic search in a supported Linux/Apple Silicon environment.
+
 ## Branch naming
 
 Use a standard type prefix followed by a short lowercase kebab-case description:

@@ -8,7 +8,7 @@ The project supports Python 3.9 and newer:
 uv sync --extra semantic
 ```
 
-The `semantic` extra installs Sentence Transformers. The first real search downloads the configured model if it is not already cached. `Search` loads that model lazily, so importing the package does not incur model startup cost.
+The `semantic` extra installs Sentence Transformers and requires Python 3.10+. The first real search downloads the configured model if it is not already cached. `Search` loads that model lazily, so importing the package does not incur model startup cost. The locked semantic dependency set targets Linux x86_64 and Apple Silicon; Intel macOS users can install the base package, but should use a supported remote or containerized semantic-search runtime.
 
 ## Connect to Elasticsearch
 
