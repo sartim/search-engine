@@ -25,7 +25,7 @@ Best document _source / None
 
 ## `Search`
 
-`Search` extends `ElasticSearch` with semantic ranking. It embeds the query and each candidate's value for `search_field`, calculates cosine similarity, and returns the highest-scoring document only when it exceeds `similarity_score_threshold`.
+`Search` extends `ElasticSearch` with semantic ranking. It embeds the query and candidate values for `search_field` as a batch, calculates cosine similarity, and returns the highest-scoring document only when it exceeds `similarity_score_threshold`. Loaded models are cached by name, and callers can inject a model instance for testing or application-level configuration.
 
 ## Index expectations
 

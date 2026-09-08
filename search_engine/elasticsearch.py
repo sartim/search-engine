@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from typing import Any, cast
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import unquote, urlsplit, urlunsplit
 
 import certifi
 from elasticsearch import Elasticsearch
@@ -29,13 +29,21 @@ class ElasticSearch:
             es_log.error("Invalid Elasticsearch URL: %s", self.es_url)
             return None
 
-        clean_url = urlunsplit((parsed.scheme, parsed.netloc.split("@")[-1], parsed.path, "", ""))
+        hostname = parsed.hostname or ""
+        if ":" in hostname and not hostname.startswith("["):
+            hostname = f"[{hostname}]"
+        if parsed.port:
+            hostname = f"{hostname}:{parsed.port}"
+        clean_url = urlunsplit((parsed.scheme, hostname, parsed.path, "", ""))
         kwargs: dict[str, Any] = {
             "ca_certs": certifi.where(),
             "request_timeout": 30,
         }
         if parsed.username is not None:
-            kwargs["basic_auth"] = (parsed.username, parsed.password or "")
+            kwargs["basic_auth"] = (
+                unquote(parsed.username),
+                unquote(parsed.password or ""),
+            )
 
         try:
             client = Elasticsearch(clean_url, **kwargs)
