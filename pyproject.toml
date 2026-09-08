@@ -35,7 +35,7 @@ Repository = "https://github.com/sartim/search-engine"
 Issues = "https://github.com/sartim/search-engine/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["search_engine"]
+packages = ["src/search_engine"]
 
 [tool.uv]
 required-environments = [

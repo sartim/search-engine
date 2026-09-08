@@ -1,6 +1,10 @@
 import sys
 from types import SimpleNamespace
 
+import pytest
+
+from search_engine.elasticsearch import ElasticSearch
+from search_engine.exceptions import InvalidElasticsearchURLError
 from search_engine.search import DEFAULT_MODEL_NAME, Search
 
 
@@ -45,8 +49,8 @@ def test_search_batches_candidate_embeddings(monkeypatch):
         def __init__(self):
             self.encoded = []
 
-        def encode(self, values, convert_to_tensor):
-            self.encoded.append((values, convert_to_tensor))
+        def encode(self, values, **kwargs):
+            self.encoded.append((values, kwargs))
             return values
 
     model = FakeModel()
@@ -61,4 +65,26 @@ def test_search_batches_candidate_embeddings(monkeypatch):
     ]
 
     assert search.get_result() == {"content": "second"}
-    assert model.encoded == [(["query"], True), (["first", "second"], True)]
+    expected_kwargs = {
+        "batch_size": 32,
+        "convert_to_tensor": True,
+        "normalize_embeddings": False,
+    }
+    assert model.encoded == [
+        (["query"], expected_kwargs),
+        (["first", "second"], expected_kwargs),
+    ]
+
+
+def test_search_rejects_invalid_threshold_and_batch_size():
+    with pytest.raises(ValueError):
+        Search("query", "content", "", "documents", similarity_score_threshold=2)
+    with pytest.raises(ValueError):
+        Search("query", "content", "", "documents", batch_size=0)
+
+
+def test_invalid_elasticsearch_url_raises_structured_error():
+    client = ElasticSearch("not-a-url", "documents")
+
+    with pytest.raises(InvalidElasticsearchURLError):
+        client.elasticsearch_conn()

@@ -46,7 +46,7 @@ search = Search(
 
 ## Understand the return value
 
-`get_result()` returns the selected Elasticsearch `_source` dictionary or `None`. If Elasticsearch is unreachable, the index has no candidates, or the best similarity score is at or below the threshold, it returns `None`.
+`get_result()` returns the selected Elasticsearch `_source` dictionary or `None`. An empty index or a score at or below the threshold returns `None`; connection and query failures raise typed exceptions from `search_engine.exceptions`.
 
 For repeated searches, reuse the same instance and call `search()` with a query override. The embedding model is cached and candidate documents are encoded as a batch:
 

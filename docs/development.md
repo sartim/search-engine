@@ -31,6 +31,14 @@ Then open the local URL printed by MkDocs. To check the same rules used in CI:
 uv run mkdocs build --strict
 ```
 
+Audit installed dependencies for known vulnerabilities with:
+
+```bash
+uv export --locked --no-dev --no-group docs --no-emit-project \
+  --format requirements.txt -o /tmp/runtime-requirements.txt
+uvx --from pip-audit pip-audit -r /tmp/runtime-requirements.txt
+```
+
 ## Documentation layout
 
 Markdown source files live in `docs/`. `mkdocs.yml` controls navigation, theme, and site metadata. The generated `site/` directory is disposable build output and should not be committed. `uv.lock` records the resolved dependency versions used by local development and CI.
@@ -48,6 +56,8 @@ The project uses the PEP 517 build interface through `pyproject.toml` and Hatchl
 ```bash
 uv build
 ```
+
+Use the manual TestPyPI workflow before the first production release. Configure a separate `testpypi` trusted publisher and environment for it.
 
 ## Releases
 

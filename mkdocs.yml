@@ -27,6 +27,7 @@ nav:
   - Home: index.md
   - Getting started: getting-started.md
   - Architecture: architecture.md
+  - API reference: api.md
   - Development: development.md
 
 markdown_extensions:
