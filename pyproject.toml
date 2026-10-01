@@ -22,7 +22,7 @@ classifiers = [
 ]
 dependencies = [
   "certifi>=2023.7.22",
-  "elasticsearch>=8.10,<9",
+  "elasticsearch>=9.5.1,<10",
 ]
 
 [project.optional-dependencies]
