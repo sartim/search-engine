@@ -46,7 +46,7 @@ required-environments = [
 dev = [
   "build>=1.2,<2",
   "pytest>=8,<9",
-  "ruff>=0.9,<1",
+  "ruff>=0.16.9,<1",
   "python-semantic-release>=10,<11",
 ]
 docs = [
