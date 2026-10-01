@@ -45,7 +45,7 @@ required-environments = [
 [dependency-groups]
 dev = [
   "build>=1.2,<2",
-  "pytest>=8,<9",
+  "pytest>=9.1.1,<10",
   "ruff>=0.9,<1",
   "python-semantic-release>=10,<11",
 ]
