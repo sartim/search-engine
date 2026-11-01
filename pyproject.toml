@@ -21,7 +21,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-  "certifi>=2023.7.22",
+  "certifi>=2026.10.23",
   "elasticsearch>=8.10,<9",
 ]
 
